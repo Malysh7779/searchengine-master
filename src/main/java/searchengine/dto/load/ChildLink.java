@@ -5,7 +5,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import searchengine.model.PageDB;
-import searchengine.model.PageRepository;
+import searchengine.repository.PageRepository;
 import searchengine.model.SiteDB;
 
 import java.util.ArrayList;

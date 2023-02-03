@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 import searchengine.dto.load.ChildLink;
 import searchengine.dto.load.LoadSiteResponse;
 import searchengine.model.IndexStatus;
-import searchengine.model.PageRepository;
+import searchengine.repository.PageRepository;
 import searchengine.model.SiteDB;
-import searchengine.model.SiteRepository;
+import searchengine.repository.SiteRepository;
 
 import java.sql.Date;
 import java.time.Instant;

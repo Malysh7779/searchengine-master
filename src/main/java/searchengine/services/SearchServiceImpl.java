@@ -10,6 +10,10 @@ import searchengine.dto.search.SearchData;
 import searchengine.dto.search.SearchRank;
 import searchengine.dto.search.SearchResponse;
 import searchengine.model.*;
+import searchengine.repository.IndexRepository;
+import searchengine.repository.LemmaRepository;
+import searchengine.repository.PageRepository;
+import searchengine.repository.SiteRepository;
 
 import java.util.*;
 

@@ -6,6 +6,10 @@ import org.springframework.stereotype.Service;
 import searchengine.dto.index.IndexingResponse;
 import searchengine.dto.index.IndexingSite;
 import searchengine.model.*;
+import searchengine.repository.IndexRepository;
+import searchengine.repository.LemmaRepository;
+import searchengine.repository.PageRepository;
+import searchengine.repository.SiteRepository;
 
 import java.util.List;
 

@@ -3,8 +3,10 @@ package searchengine.dto.index;
 import org.apache.lucene.morphology.LuceneMorphology;
 import org.apache.lucene.morphology.russian.RussianLuceneMorphology;
 import searchengine.model.*;
+import searchengine.repository.IndexRepository;
+import searchengine.repository.LemmaRepository;
+import searchengine.repository.PageRepository;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 

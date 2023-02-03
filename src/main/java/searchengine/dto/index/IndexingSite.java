@@ -1,9 +1,12 @@
 package searchengine.dto.index;
 
 import searchengine.model.*;
+import searchengine.repository.IndexRepository;
+import searchengine.repository.LemmaRepository;
+import searchengine.repository.PageRepository;
+import searchengine.repository.SiteRepository;
 import searchengine.services.IndexingServiceImpl;
 
-import java.io.IOException;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;

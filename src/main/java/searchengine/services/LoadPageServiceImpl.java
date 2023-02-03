@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import searchengine.dto.load.LoadPageResponse;
 import searchengine.model.*;
+import searchengine.repository.PageRepository;
+import searchengine.repository.SiteRepository;
 
 import java.util.List;
 

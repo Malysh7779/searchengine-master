@@ -1,7 +1,10 @@
-package searchengine.model;
+package searchengine.repository;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+import searchengine.model.IndexDB;
+import searchengine.model.LemmaDB;
+import searchengine.model.PageDB;
 
 import java.util.List;
 import java.util.Optional;
