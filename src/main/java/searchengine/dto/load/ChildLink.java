@@ -13,15 +13,13 @@ import java.util.List;
 import java.util.concurrent.RecursiveAction;
 
 public class ChildLink extends RecursiveAction {
-
     private SiteDB site;
     private String pageUrl;
     private String content;
     private String template;
     private PageRepository pageRepository;
-    private static long start = 0;
-
-    final int TIME_LIMIT = 60000;
+    private long start = 0;
+    final int TIME_LIMIT = 1000;
 
     public ChildLink(SiteDB site, String pageUrl, PageRepository pageRepository) {
         this.site = site;
@@ -75,7 +73,7 @@ public class ChildLink extends RecursiveAction {
                     for (Element element : elements) {
                         String url = element.attr("abs:href");
                         if (url.contains(template) && !url.contains("#") && (url.startsWith("http")) && (!url.endsWith(".pdf"))) {
-                            System.out.println(url);
+//                            System.out.println(url);
 
                             List<PageDB> list = pageRepository.findByPath(url);
                             if (list.size() == 0) {

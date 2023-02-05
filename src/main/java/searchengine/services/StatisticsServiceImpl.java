@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import searchengine.config.Site;
 import searchengine.config.SitesList;
+import searchengine.dto.load.ChildLink;
 import searchengine.dto.statistics.DetailedStatisticsItem;
 import searchengine.dto.statistics.StatisticsData;
 import searchengine.dto.statistics.StatisticsResponse;
@@ -14,7 +15,10 @@ import searchengine.repository.LemmaRepository;
 import searchengine.repository.PageRepository;
 import searchengine.repository.SiteRepository;
 
+import java.sql.Date;
+import java.time.Instant;
 import java.util.*;
+import java.util.concurrent.ForkJoinPool;
 
 @Service
 @RequiredArgsConstructor
@@ -40,7 +44,8 @@ public class StatisticsServiceImpl implements StatisticsService {
                 ""
         };
 
-        replacementSites();
+        formListSites();
+//        replacementSites();
 
         TotalStatistics total = new TotalStatistics();
         total.setSites(sites.getSites().size());
@@ -88,6 +93,35 @@ public class StatisticsServiceImpl implements StatisticsService {
         return response;
     }
 
+    private void formListSites() {
+
+        for(int i = 0; i < sites.getSites().size(); i++) {
+            Site site = sites.getSites().get(i);
+
+            SiteDB siteDB = siteDBRepository.findByUrl(site.getUrl());
+            List<Optional<PageDB>> sitePages = pageRepository.findBySite(siteDB);
+            List<Optional<LemmaDB>> siteLemmas = lemmaRepository.findBySite(siteDB);
+            if (siteDB == null) {
+                siteDB = new SiteDB();
+                siteDB.setStatus(IndexStatus.LOAD);
+                siteDB.setLastError("_");
+                siteDB.setName(site.getName());
+                siteDB.setUrl(site.getUrl());
+                siteDB.setStatusTime(Date.from(Instant.now()));
+
+                siteDBRepository.save(siteDB);
+            }
+
+//            System.out.println("--- " + sitePages.size());
+
+            if (sitePages.size() == 0) {
+                new ForkJoinPool().invoke(new ChildLink(siteDB, siteDB.getUrl(), pageRepository));
+                siteDB.setStatus(IndexStatus.LOADED);
+                siteDB.setStatusTime(Date.from(Instant.now()));
+                siteDBRepository.save(siteDB);
+            }
+        }
+    }
     private void replacementSites() {
         sites.clear();
 

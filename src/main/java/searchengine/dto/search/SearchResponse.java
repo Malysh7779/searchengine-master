@@ -8,5 +8,5 @@ public class SearchResponse {
     private boolean result;
     private int count;
     private String error;
-    private ArrayList<SearchData> searchData;
+    private ArrayList<SearchData> data;
 }

@@ -3,6 +3,8 @@ package searchengine.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import searchengine.config.Site;
+import searchengine.config.SitesList;
 import searchengine.dto.index.IndexingResponse;
 import searchengine.dto.index.IndexingSite;
 import searchengine.model.*;
@@ -11,12 +13,14 @@ import searchengine.repository.LemmaRepository;
 import searchengine.repository.PageRepository;
 import searchengine.repository.SiteRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class IndexingServiceImpl implements IndexingService {
     public static boolean runingService;
+    private ArrayList<SiteDB> sites = new ArrayList<>();
     @Autowired
     private SiteRepository siteRepository;
     @Autowired
@@ -30,7 +34,7 @@ public class IndexingServiceImpl implements IndexingService {
     public IndexingResponse stopIndexing() {
         IndexingServiceImpl.runingService = false;
         IndexingResponse indexingResponse = new IndexingResponse();
-        indexingResponse.setStatus("Индексация прервана пользователем");
+        indexingResponse.setError("Индексация прервана пользователем");
         indexingResponse.setResult(false);
         return indexingResponse;
     }
@@ -43,7 +47,7 @@ public class IndexingServiceImpl implements IndexingService {
         IndexingResponse indexingResponse = new IndexingResponse();
 
         if (!listIndexing.isEmpty()) {
-            indexingResponse.setStatus("Индексация уже запущена");
+            indexingResponse.setError("Индексация уже запущена");
             indexingResponse.setResult(false);
             return indexingResponse;
         }

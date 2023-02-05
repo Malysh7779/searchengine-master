@@ -37,24 +37,40 @@ public class SearchServiceImpl implements SearchService {
 
     private ArrayList<String> listResult = new ArrayList<>();
     private Integer lengthSnippet = 200;
+    private boolean isAllSites;
 
     @Override
-    public SearchResponse search(String searchString, String site, Integer offset, Integer limit) {
+    public SearchResponse search(String query, String site, Integer offset, Integer limit) {
         listIdPage.clear();
         listLemma.clear();
+        isAllSites = (site == "") || (site == null) ? true : false;
 
-        String[] words = searchString.split(" ");
+        String[] words = query.split(" ");
         siteDB = siteDBRepository.findByUrl(site);
         SearchResponse searchResponse = new SearchResponse();
 
         for (String word : words) {
-            LemmaDB lemmaDB = lemmaRepository.findByLemmaAndSite(word, siteDB);
-            if (lemmaDB == null) {
-                searchResponse.setError("не найдено");
-                searchResponse.setResult(false);
-                return searchResponse;
+            if (isAllSites) {
+                List<LemmaDB> lemmaDBList = lemmaRepository.findByLemma(word);
+                for(LemmaDB lemmaDB: lemmaDBList) {
+                    if (lemmaDB == null) {
+                        searchResponse.setError("не найдено");
+                        searchResponse.setResult(false);
+                        return searchResponse;
+                    }
+                    if (!listLemma.contains(lemmaDB)) {
+                        listLemma.add(lemmaDB);
+                    }
+                }
+            } else {
+                LemmaDB lemmaDB = lemmaRepository.findByLemmaAndSite(word, siteDB);
+                if (lemmaDB == null) {
+                    searchResponse.setError("не найдено");
+                    searchResponse.setResult(false);
+                    return searchResponse;
+                }
+                listLemma.add(lemmaDB);
             }
-            listLemma.add(lemmaDB);
         }
 
         sortListLemma();
@@ -109,7 +125,9 @@ public class SearchServiceImpl implements SearchService {
             if (listLemma.size() == 1) {
 //                System.out.println("test " + snippet.substring(firstLemma.get(0), firstLemma.get(0) + lengthSnippet));
                 result = snippet.substring(firstLemma.get(0), firstLemma.get(0) + lengthSnippet);
-//                System.out.println("test " + result);
+//                result = result.replaceAll(listLemma.get(0).getLemma(),
+//                               "<b"+listLemma.get(0).getLemma() + "</b>");
+                //                System.out.println("test " + result);
             } else {
                 // second lemma
                 for (int pos : firstLemma) {
@@ -137,7 +155,7 @@ public class SearchServiceImpl implements SearchService {
         int endPos;
         int wordTerm;
 
-        System.out.println();
+//        System.out.println();
         startPos = pos > lengthSnippet ? pos : 0;
         endPos = (pos + lengthSnippet) > content.length() ? content.length() : pos + lengthSnippet;
 //        System.out.println("+ " + content.length() + " " + startPos + " " + endPos);
@@ -181,7 +199,7 @@ public class SearchServiceImpl implements SearchService {
                     }
                 }
             }
-            searchResponse.setSearchData(listData);
+            searchResponse.setData(listData);
             return searchResponse;
         } else {
             searchResponse.setResult(false);
@@ -230,7 +248,7 @@ public class SearchServiceImpl implements SearchService {
         listIdPage.clear();
 
         for (LemmaDB lemma : listLemma) {
-            System.out.println(lemma.getLemma() + " " + lemma.getFrequency());
+//            System.out.println(lemma.getLemma() + " " + lemma.getFrequency());
 
             List<IndexDB> listIndex = indexRepository.findByLemma(lemma);
 

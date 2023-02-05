@@ -49,7 +49,7 @@ public class IndexingSite {
                     editSiteDB.setStatus(IndexStatus.FAILED);
                     siteRepository.save(editSiteDB);
 
-                    indexingResponse.setStatus("Индексация прервана");
+                    indexingResponse.setError("Индексация прервана");
                     indexingResponse.setResult(true);
                     return indexingResponse;
                 }
@@ -57,8 +57,8 @@ public class IndexingSite {
 
                     PageDB editPage = optionalPageDB.get(i).get();
                     IndexingPage indexingPage = new IndexingPage(siteDB, editPage, pageRepository, lemmaRepository, indexRepository);
-                    System.out.println(editPage.getContent());
-                    System.out.println("---------------------" + i + " из " + optionalPageDB.size());
+//                    System.out.println(editPage.getContent());
+//                    System.out.println("---------------------" + i + " из " + optionalPageDB.size());
 
                     indexingPage.run();
                 }
@@ -68,7 +68,7 @@ public class IndexingSite {
             siteRepository.save(editSiteDB);
         }
 
-        indexingResponse.setStatus("Индексация выполнена");
+        indexingResponse.setError("Индексация выполнена");
         indexingResponse.setResult(true);
         return indexingResponse;
     }

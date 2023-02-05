@@ -31,7 +31,7 @@ public class LoadPageServiceImpl implements LoadPageService {
             int pos = searchString.lastIndexOf('.', searchString.lastIndexOf('.') - 1);
             searchString = searchString.substring(pos + 1);
 
-            System.out.println(searchString);
+//            System.out.println(searchString);
 
             if (url.contains(searchString)) {
                 try {
