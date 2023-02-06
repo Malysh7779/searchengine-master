@@ -62,6 +62,7 @@ public class ChildLink extends RecursiveAction {
                         content = " ";
                     }
                     try {
+                        page.setTitle(document.title());
                         page.setContent(content);
                         page.setPath(pageUrl);
                         page.setSite(site);

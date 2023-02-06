@@ -125,6 +125,8 @@ public class SearchServiceImpl implements SearchService {
             if (listLemma.size() == 1) {
 //                System.out.println("test " + snippet.substring(firstLemma.get(0), firstLemma.get(0) + lengthSnippet));
                 result = snippet.substring(firstLemma.get(0), firstLemma.get(0) + lengthSnippet);
+
+                result = result.replaceAll(listLemma.get(0).getLemma(), "<b>" + listLemma.get(0).getLemma() + "</b>");
 //                result = result.replaceAll(listLemma.get(0).getLemma(),
 //                               "<b"+listLemma.get(0).getLemma() + "</b>");
                 //                System.out.println("test " + result);
@@ -192,6 +194,7 @@ public class SearchServiceImpl implements SearchService {
                             searchData.setSite(optSite.get().getUrl());
                             searchData.setSiteName(optSite.get().getName());
                             searchData.setUri(optPage.get().getPath());
+                            searchData.setTitle(optPage.get().getTitle());
                             searchData.setRelevance(pgRank.get(i).getRelRank());
                             searchData.setSnippet(getSnippet(optPage.get()));
                             listData.add(searchData);

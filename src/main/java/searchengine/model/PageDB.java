@@ -34,4 +34,6 @@ public class PageDB {
     @Column(columnDefinition = "MEDIUMTEXT", nullable = false)
     private String content;
 
+    @Column(columnDefinition = "VARCHAR(512)")
+    private String title;
 }
